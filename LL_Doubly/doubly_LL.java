@@ -46,6 +46,7 @@ public class doubly_LL   {
         void insert(int val, int pos) {
             if (pos <= 0) {
                 System.out.println("Invalid pos");
+                return;
             }
 
             if (pos == 1) {
@@ -63,8 +64,16 @@ public class doubly_LL   {
             }
 
             Node newNode = new Node(val);
+            if (temp == null) {
+                System.out.println("Invalid pos");
+                return;
+            }
             newNode.next = temp.next;
-            temp.next.prev = newNode;
+            if (temp.next != null) {
+                temp.next.prev = newNode;
+            } else {
+                tail = newNode;
+            }
             temp.next = newNode;
             newNode.prev = temp;
         }
@@ -85,10 +94,14 @@ public class doubly_LL   {
         void pop_back() {
             if (head == null) {
                 System.out.print("Linked List is empty");
-            } else {
-                tail = tail.prev;
-                tail.next = null;
+                return;
             }
+            if (head == tail) {
+                head = tail = null;
+                return;
+            }
+            tail = tail.prev;
+            tail.next = null;
         }
 
         void deleteKthNode(int k) {
@@ -96,6 +109,10 @@ public class doubly_LL   {
 
             // Case 1: Delete head (k == 1)
             if (k == 1) {
+                if (head == tail) {
+                    head = tail = null;
+                    return;
+                }
                 head = head.next;
                 head.prev = null;
                 return;
@@ -113,7 +130,11 @@ public class doubly_LL   {
             // Delete kth node
             Node toDelete = prev.next;
             prev.next = toDelete.next;
-            toDelete.next.prev = prev;
+            if (toDelete.next != null) {
+                toDelete.next.prev = prev;
+            } else {
+                tail = prev;
+            }
         }
 
         void printAll() {
